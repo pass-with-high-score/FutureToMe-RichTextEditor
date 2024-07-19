@@ -22,10 +22,13 @@ import androidx.compose.material.icons.filled.FormatAlignRight
 import androidx.compose.material.icons.filled.FormatBold
 import androidx.compose.material.icons.filled.FormatColorText
 import androidx.compose.material.icons.filled.FormatItalic
+import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.FormatUnderlined
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Title
+import androidx.compose.material.icons.outlined.FormatListNumbered
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -101,8 +104,15 @@ fun InputExp() {
                 onCenterAlignClick = {
                     state.toggleParagraphStyle(ParagraphStyle(textAlign = TextAlign.Center))
                 },
+                onOrderedListClick = {
+                    state.toggleOrderedList()
+                },
+                onUnorderedListClick = {
+                    state.toggleUnorderedList()
+                },
                 onExportClick = {
                     Log.d("Editor", state.toHtml())
+                    Log.d("Editor", state.toMarkdown())
                 }
             )
             RichTextEditor(
@@ -131,6 +141,8 @@ fun EditorControls(
     onStartAlignClick: () -> Unit,
     onEndAlignClick: () -> Unit,
     onCenterAlignClick: () -> Unit,
+    onOrderedListClick: () -> Unit,
+    onUnorderedListClick: () -> Unit,
     onExportClick: () -> Unit,
 ) {
     var boldSelected by rememberSaveable { mutableStateOf(false) }
@@ -140,6 +152,8 @@ fun EditorControls(
     var subtitleSelected by rememberSaveable { mutableStateOf(false) }
     var textColorSelected by rememberSaveable { mutableStateOf(false) }
     var linkSelected by rememberSaveable { mutableStateOf(false) }
+    var orderedListSelected by rememberSaveable { mutableStateOf(false) }
+    var unorderedListSelected by rememberSaveable { mutableStateOf(false) }
     var alignmentSelected by rememberSaveable { mutableIntStateOf(0) }
 
     var showLinkDialog by remember { mutableStateOf(false) }
@@ -282,6 +296,29 @@ fun EditorControls(
             Icon(
                 imageVector = Icons.Default.FormatAlignRight,
                 contentDescription = "End Align Control",
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+        ControlWrapper(
+            selected = orderedListSelected,
+            onChangeClick = { orderedListSelected = it },
+            onClick = onOrderedListClick
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.FormatListNumbered,
+                contentDescription = "Ordered List Control",
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+
+        ControlWrapper(
+            selected = unorderedListSelected,
+            onChangeClick = { unorderedListSelected = it },
+            onClick = onUnorderedListClick
+        ) {
+            Icon(
+                imageVector = Icons.Default.FormatListBulleted,
+                contentDescription = "Unordered List Control",
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }

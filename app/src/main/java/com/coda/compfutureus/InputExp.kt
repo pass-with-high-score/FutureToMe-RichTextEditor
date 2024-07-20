@@ -156,30 +156,19 @@ fun EditorControls(
     var unorderedListSelected by rememberSaveable { mutableStateOf(false) }
     var alignmentSelected by rememberSaveable { mutableIntStateOf(0) }
 
-    var showLinkDialog by remember { mutableStateOf(false) }
+    var openLinkDialog = remember { mutableStateOf(false) }
 
-    if (showLinkDialog) {
-        Dialog(onDismissRequest = {
-            showLinkDialog = false
-            linkSelected = false
-        }) {
-            // Customize your dialog layout here
-            Column(modifier = Modifier.padding(16.dp)) {
-                // Your dialog content, for example, TextField for linkText and link
-                // Confirmation button
-                Button(onClick = {
-                    // Assume linkText and link are obtained from user input within this dialog
-                    val linkText = "Example Text"
-                    val link = "http://example.com"
-                    state.addLink(text = linkText, url = link)
-                    showLinkDialog = false
-                    linkSelected = false
-                }) {
-                    Text("Confirm")
-                }
+    if (openLinkDialog.value)
+        Dialog(
+            onDismissRequest = {
+                openLinkDialog.value = false
             }
+        ) {
+            SlackDemoLinkDialog(
+                state = state,
+                openLinkDialog = openLinkDialog
+            )
         }
-    }
 
     FlowRow(
         modifier = modifier
@@ -258,7 +247,7 @@ fun EditorControls(
         ControlWrapper(
             selected = linkSelected,
             onChangeClick = { linkSelected = it },
-            onClick = { showLinkDialog = true }
+            onClick = { openLinkDialog.value = true}
         ) {
             Icon(
                 imageVector = Icons.Default.AddLink,

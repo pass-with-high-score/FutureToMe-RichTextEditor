@@ -66,8 +66,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc05")
     // Rich Text Editor
-    implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-beta03")
+    implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc05-k2")
     // Extension Icons
     implementation("androidx.compose.material:material-icons-extended:1.5.3")
 }
